@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python34
 """Simple webserver using only the Python standard library.
 
 Usage:
