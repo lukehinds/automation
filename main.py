@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 """Simple webserver using only the Python standard library.
-
 Usage:
     python3 server.py            # serves on port 8000
     python3 server.py 3000       # serves on port 3000
 """
-
+import hashlib
 import json
 import sys
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -23,7 +22,8 @@ class Handler(BaseHTTPRequestHandler):
     def do_POST(self):
         length = int(self.headers.get("Content-Length", 0))
         body = self.rfile.read(length).decode("utf-8")
-        self._send(200, "application/json", json.dumps({"received": body}))
+        request_id = hashlib.md5(body.encode()).hexdigest()
+        self._send(200, "application/json", json.dumps({"received": body, "id": request_id}))
 
     def _send(self, status, content_type, body):
         data = body.encode("utf-8")
